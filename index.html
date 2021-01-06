@@ -3,6 +3,13 @@
   <head>
     <title>Quidditch Cup</title>
     <style>
+      .gold {
+        background-color: gold;
+        color: darkslategrey;
+        padding: 3px;
+        border-radius: 5px;
+      }
+
       .brown {
         background-color: brown;
         color: white;
@@ -49,12 +56,13 @@
       <p>If you are reading this, it is because your browser does not support this awesome audio track.</p>
     </audio>
     <h1>Quidditch Cup</h1>
-    <h2>Version 1.0</h2>
+    <h2>Version 2.0</h2>
     <p>The object of the game of Quidditch is to score more the most points!</p>
     <h2>Rules</h2>
     <ol>
       <li>Clicking on the <span class="brown">Quaffle</span> earns <b>10 points</b>.</li>
-      <li>Refresh your browser to restart the game</li>
+      <li>Clicking on the <span class="gold">Golden Snitch</span> earns <b>150 points</b> and <b>ends the game</b>.</li>
+      <li>The game will automatically end after <b>15 seconds</b> if the Golden Snitch is not captured.</li>
     </ol>
     <h3>High Score: <span id="highscore">No High Score Yet</span></h3>
     <h3>Score: <span id="scoreboard">No Score Yet</span></h3>
@@ -152,16 +160,19 @@
         }
       }
 
+      var updateTime = () => {
+        time -= 1
+        timer.innerHTML = time
+        if (time === 0) {
+          endGame()
+        }
+      }
+
       var startTimer = () => {
         clearInterval(timerIntervalID)
         timer.innerHTML = time
-        timerIntervalID = setInterval(() => {
-          time -= 1
-          timer.innerHTML = time
-          if (time === 0) {
-            endGame()
-          }
-        }, 1000)
+
+        timerIntervalID = setInterval(updateTime, 1000)
       }
 
       var startGame = () => {
